@@ -14,6 +14,7 @@ def f_cambiarfiat(fiat_i):
     fiatinput = driver.find_element(By.XPATH, "//div[@id='C2Cfiatfilter_searchbox_fiat']//input[@class='css-jl5e70']")
     fiatinput.send_keys(fiat_i)
     fiatinput.send_keys(Keys.ENTER)
+
 #def f_cambiarmpago(mpago_i):
 #def f_cambiarcrypto(crypto_i):
 
