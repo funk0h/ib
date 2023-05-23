@@ -136,7 +136,6 @@ for tipo_i in list_tipo:
 
     for fiat_i in list_fiat:
         f_cambiarfiat(fiat_i)
-        #driver.implicitly_wait(10)
         time.sleep(timesleep)
 
         for mpago_i in list_mpago:
