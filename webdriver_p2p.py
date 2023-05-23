@@ -15,7 +15,6 @@ def f_cambiarfiat(fiat_i):
     fiatinput.send_keys(fiat_i)
     fiatinput.send_keys(Keys.ENTER)
 #def f_cambiarmpago(mpago_i):
-
 #def f_cambiarcrypto(crypto_i):
 
 def f_cambiartipo(tipo):
@@ -113,7 +112,7 @@ timesleep = 7
 
 #endregion
 
-#region INICIALIZAR CHROME
+#region INICIALIZAR CHROMEDRIVER
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 url = 'https://p2p.binance.com/es/trade/all-payments/USDT?fiat=BOB' 
 driver.get(url)
@@ -150,16 +149,3 @@ for tipo_i in list_tipo:
                     #driver.implicitly_wait(10)
                     time.sleep(timesleep)
 driver.quit()
-            
-
-
-            
-
-            
-
-
-
-
-
-
-
