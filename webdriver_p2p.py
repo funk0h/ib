@@ -14,9 +14,13 @@ def f_cambiarfiat(fiat_i):
     fiatinput = driver.find_element(By.XPATH, "//div[@id='C2Cfiatfilter_searchbox_fiat']//input[@class='css-jl5e70']")
     fiatinput.send_keys(fiat_i)
     fiatinput.send_keys(Keys.ENTER)
-#def f_cambiarmpago(mpago_i):
+def f_cambiarmpago(mpago_i):
+    mpagobox = driver.find_element(By.XPATH, "//div[@id='C2Cpaymentfilter_searchbox_payment']//div[@class=' css-uf3q7d']")
+    mpagobox.click()
+    mpagoinput = driver.find_element(By.XPATH, "//div[@id='C2Cpaymentfilter_searchbox_payment']//input[@class='css-jl5e70']")
+    mpagoinput.send_keys(mpago_i)
+    mpagoinput.send_keys(Keys.ENTER)
 #def f_cambiarcrypto(crypto_i):
-
 def f_cambiartipo(tipo):
     if tipo == 'compra':
         xpath_tipo = "//div[@class='css-1xpzmrx']" #compra
@@ -95,20 +99,26 @@ sheet2 = wb.sheets['Hoja1']
 fila_inicio = 2 #fila en la que inicia a copiar en excel
 col_inicio = 'A'
 
-max_datos_hoja = 10 #numero de filas de datos mostrados en binance por hoja
-max_iteracion_hoja_tfc = 7 #tfc: combinación de tipo-fiat-crypto
+max_datos_hoja = 10 #numero de filas de datos mostrados en binance, por hoja
+max_iteracion_hoja_tfc = 2 #tfcm: combinación de tipo-fiat-crypto-metodo de pago
 
 list_tipo = ['compra','venta'] 
 #list_tipo = ['compra'] #temporal hasta desarrollar la def f_cambiartipo
 
-range_fiat = sheet1.range('A2:A5')
-list_fiat = range_fiat.options(ndim=1).value 
+range_fiat = sheet1.range('A2:A10')
+list_fiat = range_fiat.options(ndim=1).value
+list_fiat = list(filter(None, list_fiat))
 
-range_crypto = sheet1.range('B2:B4')
+range_mpago = sheet1.range('B2:B10')
+list_mpago = range_mpago.options(ndim=1).value
+list_mpago = list(filter(None,list_mpago))
+
+range_crypto = sheet1.range('C2:C10')
 list_crypto = range_crypto.options(ndim=1).value
+list_crypto = list(filter(None,list_crypto))
 list_crypto = ['USDT'] #temporal hasta desarrollar la def f_cambiarcrypto
 
-timesleep = 7
+timesleep = 6
 
 #endregion
 
@@ -128,24 +138,28 @@ for tipo_i in list_tipo:
         f_cambiarfiat(fiat_i)
         #driver.implicitly_wait(10)
         time.sleep(timesleep)
+
+        for mpago_i in list_mpago:
+            f_cambiarmpago(mpago_i)
+            time.sleep(timesleep)
         
-        for crypto_i in list_crypto:
-            #f_cambiarcrypto(crypto_i)
-            iteracion_hoja = 0
-            
-            repeticion = True
-            while repeticion == True:
-                list_i = f_obtenerdatos(tipo_i,fiat_i,crypto_i) #hasta 10 filas de datos
-                sheet2.range(col_inicio+str(fila_inicio)).value = list_i
+            for crypto_i in list_crypto:
+                #f_cambiarcrypto(crypto_i)
+                
+                iteracion_hoja = 0
+                repeticion = True
+                while repeticion == True:
+                    list_i = f_obtenerdatos(tipo_i,fiat_i,crypto_i) #hasta 10 filas de datos
+                    sheet2.range(col_inicio+str(fila_inicio)).value = list_i
 
-                fila_inicio = fila_inicio + len(list_i)
+                    fila_inicio = fila_inicio + len(list_i)
 
-                iteracion_hoja = iteracion_hoja + 1
+                    iteracion_hoja = iteracion_hoja + 1
 
-                if len(list_i) < max_datos_hoja or iteracion_hoja == max_iteracion_hoja_tfc:
-                    repeticion = False
-                else:
-                    f_nextpage()
-                    #driver.implicitly_wait(10)
-                    time.sleep(timesleep)
+                    if len(list_i) < max_datos_hoja or iteracion_hoja == max_iteracion_hoja_tfc:
+                        repeticion = False
+                    else:
+                        f_nextpage()
+                        #driver.implicitly_wait(10)
+                        time.sleep(timesleep)
 driver.quit()
