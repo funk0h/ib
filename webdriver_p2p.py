@@ -14,7 +14,10 @@ def f_cambiarfiat(fiat_i):
     fiatinput = driver.find_element(By.XPATH, "//div[@id='C2Cfiatfilter_searchbox_fiat']//input[@class='css-jl5e70']")
     fiatinput.send_keys(fiat_i)
     fiatinput.send_keys(Keys.ENTER)
+#def f_cambiarmpago(mpago_i):
+
 #def f_cambiarcrypto(crypto_i):
+
 def f_cambiartipo(tipo):
     if tipo == 'compra':
         xpath_tipo = "//div[@class='css-1xpzmrx']" #compra
@@ -127,11 +130,9 @@ for tipo_i in list_tipo:
         #driver.implicitly_wait(10)
         time.sleep(timesleep)
         
-
         for crypto_i in list_crypto:
             #f_cambiarcrypto(crypto_i)
             iteracion_hoja = 0
-            #esperar a que se cargue el elemento 'anunciante'
             
             repeticion = True
             while repeticion == True:
