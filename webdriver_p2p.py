@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 import xlwings as xw
 import time
+import socket
 
 def f_cambiarfiat(fiat_i):
     fiatbox = driver.find_element(By.XPATH, "//div[@id='C2Cfiatfilter_searchbox_fiat']//div[@class=' css-uf3q7d']")
@@ -33,12 +34,12 @@ def f_nextpage():
     nextpage_button.click()
 def f_obtenerdatos(tipo_i,fiat_i,crypto_i):
     
-    xpath_anunciante = "//div[@class='css-ovjtyv']//div[@class='css-1rhb69f']/a"
-    xpath_ordenes = "//div[@class='css-ovjtyv']//div[@class='css-1a0u4z7']"
-    xpath_completado = "//div[@class='css-ovjtyv']//div[@class='css-19crpgd']"
-    xpath_precio = "//div[@class='css-ovjtyv']//div[@class='css-1m1f8hn']"
-    xpath_disponible = "//div[@class='css-ovjtyv']//div[@class='css-3v2ep2']//div[@class='css-vurnku']"
-    xpath_limites = "//div[@class='css-ovjtyv']//div[@class='css-16w8hmr']//div[@class='css-4cffwv']"
+    xpath_anunciante = "//div[@class='css-1jb7fpj']"
+    xpath_ordenes = "//div[@class='css-1a0u4z7']"
+    xpath_completado = "//div[@class='css-19crpgd']"
+    xpath_precio = "//div[@class='css-1m1f8hn']"
+    xpath_disponible = "//div[@class='css-3v2ep2']//div[@class='css-vurnku']"
+    xpath_limites = "//div[@class='css-4cffwv']"
     xpath_pago = "//div[@class='css-tlcbro']"
     
     list_xpath = [xpath_anunciante,
@@ -91,6 +92,7 @@ def f_obtenerdatos(tipo_i,fiat_i,crypto_i):
     return(list_i)
 
 #region DEFINIR VARIABLES
+
 path = 'C:/Users/user/Documents/'
 file = '30_p2p.xlsx'
 wb = xw.Book(path+file)
@@ -100,20 +102,21 @@ fila_inicio = 2 #fila en la que inicia a copiar en excel
 col_inicio = 'A'
 
 max_datos_hoja = 10 #numero de filas de datos mostrados en binance, por hoja
+
 max_iteracion_hoja_tfc = 2 #tfcm: combinación de tipo-fiat-crypto-metodo de pago
 
 list_tipo = ['compra','venta'] 
 #list_tipo = ['compra'] #temporal hasta desarrollar la def f_cambiartipo
 
-range_fiat = sheet1.range('A2:A10')
+range_fiat = sheet1.range('B2:B10')
 list_fiat = range_fiat.options(ndim=1).value
 list_fiat = list(filter(None, list_fiat))
 
-range_mpago = sheet1.range('B2:B10')
+range_mpago = sheet1.range('C2:C10')
 list_mpago = range_mpago.options(ndim=1).value
 list_mpago = list(filter(None,list_mpago))
 
-range_crypto = sheet1.range('C2:C10')
+range_crypto = sheet1.range('D2:D10')
 list_crypto = range_crypto.options(ndim=1).value
 list_crypto = list(filter(None,list_crypto))
 list_crypto = ['USDT'] #temporal hasta desarrollar la def f_cambiarcrypto
