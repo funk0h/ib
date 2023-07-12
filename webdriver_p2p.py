@@ -7,7 +7,6 @@ from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 import xlwings as xw
 import time
-import socket
 
 def f_cambiarfiat(fiat_i):
     fiatbox = driver.find_element(By.XPATH, "//div[@id='C2Cfiatfilter_searchbox_fiat']//div[@class=' css-uf3q7d']")
